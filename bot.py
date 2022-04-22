@@ -2,17 +2,17 @@
 
 import config
 import telebot
+import emoji
 
 bot = telebot.TeleBot(config.TOKEN)
 
 
-def secret_word(message):
-    return message.text == 'secret'
+@bot.message_handler(content_types=["text"])
+def speak(message):
 
+    message_text = message.text + '... Ну и на кой хер ты это пишешь? Пожри-ка дерьма ' + emoji.emojize(':shit::shit::shit:', language='alias')
 
-@bot.message_handler(func=secret_word)
-def echo_all(message):
-    bot.send_message(config.p_chat_id, 'введено секретное слово!')
+    bot.send_message(message.chat.id, message_text)
 
 
 bot.polling(none_stop=True)
