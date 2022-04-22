@@ -13,7 +13,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(content_types=["text"])
 def speak(message):
-    date = message.date + 10800
+    date = message.date + 10800     # московское время (UTC + 3 часа в секундах)
     chat_id = message.chat.id
     user_id = message.from_user.id
     name = message.from_user.first_name
