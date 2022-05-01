@@ -9,9 +9,9 @@ bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(content_types=['text'])
 def chat(message):
-    m1 = bot.send_message(message.chat.id, message.id)
+    bot.delete_message(message.chat.id, message.id)
+    m1 = bot.send_message(message.chat.id, 'Я удалил твое сообщение')
     bot.delete_message(message.chat.id, m1.id)
-
 
 
 
