@@ -7,13 +7,11 @@ import telebot
 bot = telebot.TeleBot(config.TOKEN)
 
 
-@bot.message_handler(content_types=['text'])
-def start(message):
-    with open('file.txt', 'w+', encoding='utf-8') as file:
-        file.write(f'{message.text}')
-    doc = open('file.txt', 'rb')
-    bot.send_document(message.chat.id, doc)
-
+@bot.message_handler(func=lambda m: True)
+def chat(message):
+    text = 'Смотри что могу!\n\n<b>Жирный</b>\n<i>Курсив</i>\n<u>Нижнее почеркивание</u>\n<s>Зачеркнутый</s>' \
+           '<a href="https://stepik.org/lesson/666879/step/5?auth=login&unit=664880">Гиперссылка</a>'
+    bot.send_message(message.chat.id, text, parse_mode='HTML')
 
 
 

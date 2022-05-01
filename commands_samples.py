@@ -116,7 +116,12 @@ def start(message):
     bot.send_photo(message.chat.id, message.photo[0].file_id)
 
 
-
+# Форматирование текста
+@bot.message_handler(func=lambda m: True)
+def chat(message):
+    bot.send_message(message.chat.id, '_любой_ текст', parse_mode='Markdown')   # курсив, с помощью Markdown
+    bot.send_message(message.chat.id, '<b>любой</b> текст', parse_mode='HTML')      # Жирный, с помощью HTML
+# Рекомендуется использовать  HTML, так как он остается неизменным с обновлениями библиотеки
 
 
 
