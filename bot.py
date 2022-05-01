@@ -3,14 +3,16 @@
 import config
 import telebot
 
+
 bot = telebot.TeleBot(config.TOKEN)
 
 
-@bot.message_handler(content_types=['text', 'audio', 'document', 'photo', 'sticker', 'video', 'location', 'contact'])
+@bot.message_handler(regexp=r'\d{11}')
 def start(message):
-    out_messages_ru = {'text': 'Это текст', 'audio': 'Это аудио', 'document': 'Это документ', 'photo': 'Это фото',
-                       'sticker': 'Это стикер', 'video': 'Это видео', 'location': 'Это геопозиция', 'contact': 'Это контакт'}
-    bot.send_message(message.chat.id, out_messages_ru[message.content_type])
+    bot.send_message(message.chat.id, 'Это номер телефона')
 
+@bot.message_handler(func=lambda message: True)
+def start(message):
+    bot.send_message(message.chat.id, 'Отправьте номер телефона')
 
 bot.polling(none_stop=True)
