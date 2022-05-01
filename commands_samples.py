@@ -110,9 +110,13 @@ def start(message):
     bot.send_photo(message.chat.id, r'https://c.tenor.com/JR6q0Nvzr_wAAAAC/baby-yoda.gif')
 
 # Бот получает фото и отправляет такое же обратно по id
+# для других типов контента, bot.send_message(message.chat.id, message)
 @bot.message_handler(content_types=['photo'])
 def start(message):
     bot.send_photo(message.chat.id, message.photo[0].file_id)
+
+
+
 
 
 
