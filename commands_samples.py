@@ -63,6 +63,59 @@ def f(message):
 def start(message):
     bot.reply_to(message, 'Hi!')
 
+# Логическое И
+# Функция выполнится если все проверки вернут True
+# В примере снизу функция будет вызвана если тип сообщения будет текст, и текст сообщения будет 1
+@bot.message_handler(content_types = ['text'], func = lambda message: message.text == '1')
+def send_something(message):
+    pass
+
+
+# Логическое ИЛИ
+# Функция выполнится если хотя бы один из обработчиков пройдёт проверку.
+# В примере снизу функция будет вызвана если текст сообщения будет 1 или будет использована команда /hello
+@bot.message_handler(func = lambda message: message.text == '1')
+@bot.message_handler(commands=['hello'])
+def send_something(message):
+    pass
+
+
+# Бот отправляет фото
+@bot.message_handler(commands=['start', 'end'])
+def start(message):
+    file = open('photo.jpg', 'rb')
+    bot.send_photo(message.chat.id, file)
+
+# Бот отправляет видео
+@bot.message_handler(commands=['start', 'end'])
+def start(message):
+    file = open('video.mp4', 'rb')
+    bot.send_video(message.chat.id, file)
+
+# Команды для других типов
+bot.send_audio(chat_id, audio)  # аудио
+bot.send_voice(chat_id, voice)  # голосовое сообщение
+bot.send_document(chat_id, doc) # документ
+bot.send_sticker(chat_id, "sticker_id") # стикер
+
+# Бот отправляет фото и сообщение
+@bot.message_handler(commands=['start', 'end'])
+def start(message):
+    file = open('photo.jpg', 'rb')
+    bot.send_photo(message.chat.id, file, 'Это фото')
+
+# Бот отправляет фото с онлайн ресурса
+@bot.message_handler(commands=['start', 'end'])
+def start(message):
+    bot.send_photo(message.chat.id, r'https://c.tenor.com/JR6q0Nvzr_wAAAAC/baby-yoda.gif')
+
+# Бот получает фото и отправляет такое же обратно по id
+@bot.message_handler(content_types=['photo'])
+def start(message):
+    bot.send_photo(message.chat.id, message.photo[0].file_id)
+
+
+
 
 
 
