@@ -7,5 +7,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Useful snippets" />
+    <orderEntry type="module" module-name="PyCharmProjects" />
   </component>
 </module>
