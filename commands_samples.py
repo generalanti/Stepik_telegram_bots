@@ -125,11 +125,21 @@ def chat(message):
 
 
 
+# Получаем id сообщения самого бота
+@bot.message_handler(commands=['start'])
+def start(message):
+    message1 = bot.send_message(message.chat.id, message.id)
+    bot.send_message(message.chat.id, message1.id)
 
 
+# Удаляем сообщение
+@bot.message_handler(func=lambda message: True)
+def start(message):
+    bot.delete_message(message.chat.id, message.id)
 
-
-
+# Удаляем сообщение самого бота
+    m1 = bot.send_message(message.chat.id, message.id)
+    bot.delete_message(message.chat.id, m1.id)
 
 bot.polling(none_stop=True)
 
