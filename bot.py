@@ -16,3 +16,13 @@ def speak(message):
 
 
 bot.polling(none_stop=True)
+
+
+
+
+# Если введены команды из списка, то выполняется функция
+# @bot.message_handler(commands=['start', 'end'])
+# def start(message):
+#     bot.send_message(message.chat.id, 'Hi!')
+
+
