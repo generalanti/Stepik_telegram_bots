@@ -145,7 +145,7 @@ def start(message):
 bot.edit_message_text(chat_id=message.chat.id, message_id=message.id, text='Какой-то текст', parse_mode='HTML', reply_markup=keyboard)
 
 # добавление кнопок из ReplyKeyboardMarkup
-@bot.message_handler(commands=['text'])
+@bot.message_handler(content_types=['text'])
 def keyboard_start(message):
     startKBoard = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     Catalog = types.KeyboardButton(text="Каталог")
