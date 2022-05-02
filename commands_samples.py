@@ -144,6 +144,20 @@ def start(message):
 # Редактируем сообщение бота
 bot.edit_message_text(chat_id=message.chat.id, message_id=message.id, text='Какой-то текст', parse_mode='HTML', reply_markup=keyboard)
 
+# добавление кнопок из ReplyKeyboardMarkup
+@bot.message_handler(commands=['text'])
+def keyboard_start(message):
+    startKBoard = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    Catalog = types.KeyboardButton(text="Каталог")
+    Info = types.KeyboardButton(text="Информация")
+    startKBoard.add(Catalog, Info)
+    bot.send_message(message.chat.id, "Добро пожаловать в магазин цифровых товаров", reply_markup=startKBoard)
+
+
+
+
+
+# заставляет бота работать в цикле
 bot.polling(none_stop=True)
 
 
