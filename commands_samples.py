@@ -141,6 +141,9 @@ def start(message):
     m1 = bot.send_message(message.chat.id, message.id)
     bot.delete_message(message.chat.id, m1.id)
 
+# Редактируем сообщение бота
+bot.edit_message_text(chat_id=message.chat.id, message_id=message.id, text='Какой-то текст', parse_mode='HTML', reply_markup=keyboard)
+
 bot.polling(none_stop=True)
 
 
