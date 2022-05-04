@@ -154,6 +154,23 @@ def keyboard_start(message):
     bot.send_message(message.chat.id, "Добро пожаловать в магазин цифровых товаров", reply_markup=startKBoard)
 
 
+# Убираем клавиатуру
+bot.send_message(message.chat.id, "Убираем клавиатуру", reply_markup=types.ReplyKeyboardRemove())
+
+# чтобы клавиатура исчезла при нажатии кнопки
+kb = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1, one_time_keyboard=True)
+
+# добавление кнопок из InlineKeyboardMarkup
+def url(message):
+    markup = types.InlineKeyboardMarkup()
+    btn_my_site = types.InlineKeyboardButton(text='Наш сайт', url='https://stepik.org/')
+    markup.add(btn_my_site)
+    bot.send_message(message.chat.id, "Нажми на кнопку и перейди на наш сайт.", reply_markup=markup)
+
+
+
+
+
 
 
 
