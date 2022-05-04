@@ -167,6 +167,33 @@ def url(message):
     markup.add(btn_my_site)
     bot.send_message(message.chat.id, "Нажми на кнопку и перейди на наш сайт.", reply_markup=markup)
 
+# добавление switch-кнопки (с последующей активацией бота в другом чате в inline режиме)
+def switch(message):
+    markup = types.InlineKeyboardMarkup()
+    switch_button = types.InlineKeyboardButton(text='Try', switch_inline_query="Telegram")
+    markup.add(switch_button)
+    bot.send_message(message.chat.id, "Выбрать чат", reply_markup = markup)
+
+
+# Callback кнопки =)
+@bot.message_handler(commands=['start'])
+def cmd_start(message):
+    start_keyboard = types.InlineKeyboardMarkup()
+    Hack_Pentagon = types.InlineKeyboardButton(text='Hack Pentagon', callback_data='HackPentagon')
+    Snorovka_School = types.InlineKeyboardButton(text='Snorovka School', callback_data='SnorovkaSchool')
+    start_keyboard.add(Hack_Pentagon, Snorovka_School)
+    bot.send_message(message.chat.id, 'А вот и callback кнопки!', reply_markup=start_keyboard)
+
+#Если получаем callback ответ с клавиатуры запускаем функцию answer_callback
+@bot.callback_query_handler(func=lambda c:c.data)
+def answer_callback(callback):
+    if callback.data == 'SnorovkaSchool':
+        #Что-то делаем
+    elif callback.data == 'HackPentagon':
+        #Взламываем Пентагон
+
+
+
 
 
 
