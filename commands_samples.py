@@ -193,7 +193,9 @@ def answer_callback(callback):
         #Взламываем Пентагон
 
 
-
+# изменяем ранее сделанные кнопки (по факту меняем клавиатуру)
+        bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.id, text='Какой-то текст',
+                              reply_markup=some_keyboard)
 
 
 
