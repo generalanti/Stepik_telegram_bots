@@ -23,9 +23,6 @@ def register(message):
     bot.register_next_step_handler(sent, calc)
 
 
-
-
-# TODO: проверить алгоритм решения уравнения
 def calc(message):
     str1 = message.text
     result = re.search(r'-?\d+\s-?\d+\s-?\d+', str1)
@@ -35,15 +32,14 @@ def calc(message):
         coe_a = int(str1[0])
         coe_b = int(str1[1])
         coe_c = int(str1[2])
-        discr = coe_b^2 - 4 * coe_a * coe_c
+        discr = coe_b ** 2 - 4 * coe_a * coe_c
         bot.send_message(message.chat.id, f'Дискриминант равен {discr}')
         if discr > 0:
             bot.send_message(message.chat.id, f'У уравнения два корня:\n\
-            Первый корень: {round(-coe_b + abs(discr)/(2 * coe_a), 1)}\n\
-            Второй корень: {round(-coe_b - abs(discr)/(2 * coe_a), 1)}')
+            Первый корень: {round(- coe_b + discr ** (0.5)/(2 * coe_a), 3)}\n\
+            Второй корень: {round(- coe_b - discr ** (0.5)/(2 * coe_a), 3)}')
         elif discr == 0:
-            bot.send_message(message.chat.id, f'У уравнения один корень: \
-            {round(-coe_b/(2 * coe_a), 1)}')
+            bot.send_message(message.chat.id, f'У уравнения один корень: {round(-coe_b/(2 * coe_a), 1)}')
         else:
             bot.send_message(message.chat.id, 'У уравнения нет решений')
     else:
