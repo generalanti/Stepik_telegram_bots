@@ -197,7 +197,30 @@ def answer_callback(callback):
         bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.id, text='Какой-то текст',
                               reply_markup=some_keyboard)
 
+# Отправка больших сообщений (разбиение больших сообщений на более мелкие)
+from telebot import util
+large_text = open("large_text.txt", "rb").read()
 
+# Разбивает одну строку на несколько строк с максимальным количеством `символов на строку` (макс. 4096)
+# Разбиение происходит на '\n', '.' или ' ' именно с таким приоритетом.
+# smart_split возвращает список с разделенным текстом.
+
+splitted_text = util.smart_split(large_text, chars_per_string=3000)
+for text in splitted_text:
+	bot.send_message(chat_id, text)
+
+
+# получение текста сообщения пользователя в python
+@bot.message_handler(commands=['start'])
+def start(message):
+    sent = bot.reply_to(message, 'Пожалуйста, оставьте отзыв!')
+    bot.register_next_step_handler(sent, hello)
+
+def hello(message):
+    message_to_save = message.text
+    #message.text и будет являться пользовательским вводом
+    #Теперь мы можем делать с ним всё, что захотим
+    bot.send_message(message.chat.id, 'Спасибо!')
 
 
 
