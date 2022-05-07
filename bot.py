@@ -3,34 +3,48 @@
 import config
 import telebot
 from telebot import types
+import re
 
 bot = telebot.TeleBot(config.TOKEN)
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    start_kboard = types.InlineKeyboardMarkup(row_width=2)
-    btn_menu = types.InlineKeyboardButton(text='Меню', callback_data='menu')
-    start_kboard.add(btn_menu)
-    bot.send_message(message.chat.id, 'Добро пожаловать в ресторан Chum Bucket', reply_markup=start_kboard)
 
-@bot.callback_query_handler(func=lambda c:c.data)
-def check_callback(callback):
-    options_kboard = types.InlineKeyboardMarkup(row_width=2)
-    btn_water = types.InlineKeyboardButton(text='Вода', callback_data='water')
-    btn_back = types.InlineKeyboardButton(text='Назад', callback_data='back')
-    btn_back_to_menu = types.InlineKeyboardButton(text='Вернуться в меню', callback_data='back_to_menu')
+    start_kboard = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    btn_solve = types.KeyboardButton(text='Решить квадратное уравнение')
+    start_kboard.add(btn_solve)
+    bot.send_message(message.chat.id, 'Привет, что тебя интересует?', reply_markup=start_kboard)
 
-    if callback.data == 'menu':
-        options_kboard.add(btn_water, btn_back)
-        reply_msg = 'Вот наше меню:'
-    elif callback.data == 'water':
-        options_kboard.add(btn_back_to_menu)
-        reply_msg = 'Воды нет, мы банкроты Т_Т'
-    elif callback.data == 'back' or 'back_to_menu':
-        start(callback.message)
-        return
-    bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.id, text=reply_msg,
-                          reply_markup=options_kboard)
+
+@bot.message_handler(func=lambda message: message.text == 'Решить квадратное уравнение')
+def register(message):
+    sent = bot.reply_to(message, 'Введите коэффициенты ax^2 + bx + c в виде: a b c')
+    bot.register_next_step_handler(sent, calc)
+
+
+def calc(message):
+    str1 = message.text
+    result = re.search(r'-?\d+\s-?\d+\s-?\d+', str1)
+    if result:
+        bot.send_message(message.chat.id, 'Коэффициенты введены верно, начинаю решать уравнение')
+        str1 = result.group(0).split()
+        coe_a = int(str1[0])
+        coe_b = int(str1[1])
+        coe_c = int(str1[2])
+        discr = coe_b ** 2 - 4 * coe_a * coe_c
+        bot.send_message(message.chat.id, f'Дискриминант равен {discr}')
+        if discr > 0:
+            bot.send_message(message.chat.id, f'У уравнения два корня:\n\
+            Первый корень: {round(- coe_b + discr ** (0.5)/(2 * coe_a), 3)}\n\
+            Второй корень: {round(- coe_b - discr ** (0.5)/(2 * coe_a), 3)}')
+        elif discr == 0:
+            bot.send_message(message.chat.id, f'У уравнения один корень: {round(-coe_b/(2 * coe_a), 1)}')
+        else:
+            bot.send_message(message.chat.id, 'У уравнения нет решений')
+    else:
+        bot.reply_to(message, 'Не правильно введены коэффициенты')
+        register(message)
+
 
 bot.polling(none_stop=True)

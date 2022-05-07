@@ -142,7 +142,7 @@ def start(message):
     bot.delete_message(message.chat.id, m1.id)
 
 # Редактируем сообщение бота
-bot.edit_message_text(chat_id=message.chat.id, message_id=message.id, text='Какой-то текст', parse_mode='HTML', reply_markup=keyboard)
+bot.edit_message_text(chat_id=message.chat.id, message_id=message.id, text='Какой-то текст', parse_mode='HTML', reply_markup='keyboard')
 
 # добавление кнопок из ReplyKeyboardMarkup
 @bot.message_handler(content_types=['text'])
@@ -183,6 +183,10 @@ def cmd_start(message):
     Snorovka_School = types.InlineKeyboardButton(text='Snorovka School', callback_data='SnorovkaSchool')
     start_keyboard.add(Hack_Pentagon, Snorovka_School)
     bot.send_message(message.chat.id, 'А вот и callback кнопки!', reply_markup=start_keyboard)
+    # Или если нужно ответить (reply) с кнопками:
+    bot.send_message(chat_id=message.chat.id, text='А вот и callback кнопки!', \
+                     reply_to_message_id=message.id, reply_markup=start_keyboard)
+
 
 #Если получаем callback ответ с клавиатуры запускаем функцию answer_callback
 @bot.callback_query_handler(func=lambda c:c.data)
