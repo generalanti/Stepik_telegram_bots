@@ -50,7 +50,7 @@ def send_document(message):
 # TODO: доработать механизм шафлинга кнопок (выскакивают ошибки одинаковых последовательностей)
 @bot.callback_query_handler(func=lambda c:c.data)
 def switch_inline_btns(callback):
-    if callback.data in ['btn1', 'btn2']:
+    if callback.data in ['btn2', 'btn3']:
         flag = True
         while flag:
             markup = types.InlineKeyboardMarkup(row_width=3)
@@ -68,18 +68,38 @@ def switch_inline_btns(callback):
                 flag = True
                 print(f'Произошла ошибка: {e}')
 
-    elif callback.data == 'btn3':
+    elif callback.data == 'btn1':
         markup2 = types.InlineKeyboardMarkup(row_width=1)
         btn_A = types.InlineKeyboardButton(text='Да', callback_data='btnA')
         btn_B = types.InlineKeyboardButton(text='Нет', callback_data='btnB')
         btn_C = types.InlineKeyboardButton(text='Нет', callback_data='btnC')
         markup2.add(btn_A, btn_B, btn_C)
+        bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
+                              text="Что ты выберешь?", reply_markup=markup2)
     elif callback.data in ['btnA', 'btnB', 'btnC']:
         markup3 = types.InlineKeyboardMarkup(row_width=1)
         btn_link = types.InlineKeyboardButton(text='Зайди сюда', url='https://7qp.github.io/telegram_bot/')
         markup3.add(btn_link)
         bot.edit_message_text(chat_id=callback.message.chat.id, message_id=callback.message.message_id,
-                              reply_markup=markup3)
+                              text='Хорошо', reply_markup=markup3)
+
+@bot.message_handler(content_types=['photo'])
+def get_photo(message):
+    bot.send_photo(message.chat.id, r'https://7qp.github.io/telegram_bot/img/photo.jpg')
+
+    sent = bot.send_message(message.chat.id, 'Введи свое имя в телеграме')
+    bot.register_next_step_handler(sent, user_id_check)
+
+def user_id_check(message):
+    if message.from_user.id == message.text:
+        markup = types.InlineKeyboardMarkup()
+        btn_my_site = types.InlineKeyboardButton(text='Добро пожаловать!', url='https://7qp.github.io/telegram_bot/')
+        markup.add(btn_my_site)
+        bot.send_message(message.chat.id, 'ссылка', reply_markup=markup)
+
+
+
+
 
 # @bot.message_handler(func=lambda message: message.text == 'Решить квадратное уравнение')
 # def register(message):

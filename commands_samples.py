@@ -86,6 +86,11 @@ def start(message):
     file = open('photo.jpg', 'rb')
     bot.send_photo(message.chat.id, file)
 
+# Бот отправляет фото по url
+@bot.message_handler(commands=['start', 'end'])
+def start(message):
+    bot.send_photo(message.chat.id, r'url ссылка')
+
 # Бот отправляет видео
 @bot.message_handler(commands=['start', 'end'])
 def start(message):
